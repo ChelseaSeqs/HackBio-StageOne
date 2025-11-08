@@ -1,3 +1,5 @@
+# Creating a function to calculate the hamming distance between two strings
+
 def calculate_hamming_distance(string1, string2):
 
     # First create a variable that sets the initial value to 0
