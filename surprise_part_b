@@ -1,0 +1,61 @@
+# Libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+## Part B – Breast Cancer Data Exploration
+
+## Lets create a scatter plot
+# Plot texture_mean vs radius_mean and color points by diagnosis (M = malignant, B = benign).
+
+# Load into DataFrame
+df_url = "https://raw.githubusercontent.com/HackBio-Internship/2025_project_collection/refs/heads/main/Python/Dataset/data-3.csv"
+df = pd.read_csv(df_url)
+
+# Lets see the dataset
+# print(df.head())
+
+# Set a clean style and plot
+sns.set(style="whitegrid")
+
+plt.figure(figsize=(7,5))
+sns.scatterplot(data=df, x="radius_mean", y="texture_mean", hue="diagnosis", palette={"M":"red", "B":"blue"}, alpha=0.7)
+plt.title("Texture vs Radius (colored by Diagnosis)")
+plt.xlabel("Mean Radius")
+plt.ylabel("Mean Texture")
+plt.legend(title="Diagnosis", labels=["Malignant (M)", "Benign (B)"])
+plt.tight_layout()
+plt.show()
+
+
+## Lets create a heatmap with correlation values annotated
+features = ["radius_mean", "texture_mean", "perimeter_mean", "area_mean", "smoothness_mean", "compactness_mean"]
+corr_matrix = df[features].corr()
+
+plt.figure(figsize=(7,5))
+sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+plt.title("Correlation Heatmap of Key Features")
+plt.tight_layout()
+plt.show()
+
+## Next, the scatter Plot to compare smoothness vs compactness
+plt.figure(figsize=(7,5))
+sns.scatterplot(data=df, x="smoothness_mean", y="compactness_mean", hue="diagnosis", palette={"M":"red", "B":"blue"}, alpha=0.7)
+plt.title("Smoothness vs Compactness (by Diagnosis)")
+plt.xlabel("Mean Smoothness")
+plt.ylabel("Mean Compactness")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.legend(title="Diagnosis")
+plt.tight_layout()
+plt.show()
+
+##Finally, density/KDE plot of area_mean for both M and B diagnoses
+plt.figure(figsize=(7,5))
+sns.kdeplot(data=df[df["diagnosis"]=="M"], x="area_mean", label="Malignant (M)", color="red", fill=True, alpha=0.4)
+sns.kdeplot(data=df[df["diagnosis"]=="B"], x="area_mean", label="Benign (B)", color="blue", fill=True, alpha=0.4)
+plt.title("Distribution of Mean Area by Diagnosis")
+plt.xlabel("Mean Area")
+plt.ylabel("Density")
+plt.legend(title="Diagnosis")
+plt.tight_layout()
+plt.show()
